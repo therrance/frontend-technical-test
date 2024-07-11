@@ -6,7 +6,24 @@ import { request } from './helpers';
  *
  * @return {Promise<Array.<vehicleSummaryPayload>>}
  */
-// TODO: All API related logic should be made inside this function.
 export default async function getData() {
-  return [];
+  try {
+    const response = await fetch('/api/vehicles.json');
+    const vehicles = await response.json();
+
+    const detailedVehicles = await Promise.all(vehicles.map(async (vehicle) => {
+      try {
+        const detailResponse = await fetch(vehicle.apiUrl);
+        const details = await detailResponse.json();
+        if (!details.price) throw new Error('No price info');
+        return { ...vehicle, ...details };
+      } catch (error) {
+        return null; // Ignore vehicles with broken apiUrl or without price information
+      }
+    }));
+
+    return detailedVehicles.filter((vehicle) => vehicle !== null);
+  } catch (error) {
+    return [];
+  }
 }

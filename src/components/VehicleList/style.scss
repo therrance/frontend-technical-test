@@ -1,3 +1,31 @@
-.VehicleList {
-  width: 100%;
+.vehicle-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+
+  .vehicle-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .vehicle-card {
+    flex: 0 1 calc(50% - 2rem);
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .vehicle-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .vehicle-card {
+    flex: 0 1 calc(25% - 2rem);
+  }
 }
